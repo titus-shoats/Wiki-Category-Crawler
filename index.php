@@ -1,6 +1,5 @@
 <?php 
 require("curl/Curl.php");
- // ini_set('max_execution_time', 100);
 set_time_limit(170);
 
 ?>
@@ -28,8 +27,6 @@ set_time_limit(170);
  
 
         $(document).ready(function(){
-
-        	
             
              WIKI.App.init();
 
@@ -44,30 +41,30 @@ set_time_limit(170);
 <div class="container">
 
                     <div class="row">
-                    	<div class="col-md-12">
-                    		 <h3>WIKI API Category Crawler</h3>
+                      <div class="col-md-12">
+                         <h3>WIKI API Category Crawler</h3>
                              
                                  <label for="form">Select a Category</label>
                                  <br/>
-                    		     
+                             
                                  
-			                     <form action="index.php" name="form" id="form" method="post" enctype="form-data">
-			                        <select name="categories" id="categories">
-                    		    
-                    		    	<option class="categories"  selected="">Select a Category</option>
-                    		    	
+                           <form action="index.php" name="form" id="form" method="post" enctype="form-data">
+                              <select name="categories" id="categories">
+                            
+                              <option class="categories"  selected="">Select a Category</option>
+                              
 
-                    		    </select>
-                    		    <br/>
-                    		    <br/>
-                    		     <h3 id="searching"></h3>
-			                     	<button type="submit" id="submit" class="btn btn-primary">Submit</button>
-			                     </form>
-                    	</div>
+                            </select>
+                            <br/>
+                            <br/>
+                             <h3 id="searching"></h3>
+                            <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+                           </form>
+                      </div>
                     </div>
 
 
-		
+    
                    
  <?php
 
@@ -82,7 +79,7 @@ $wiki_cat_extract = array();
 $decode_title = array();
 
 /****Create headers for our readability API**/
-$headers = [
+$readability_headers = [
    'X-Mashape-Key:IRE9x39MQImshJy7zJL21m4QxqORp1XfAXKjsnkzt0BFJfvfZS',
    'Content-Type:application/x-www-form-urlencoded',
    'Accept:application/json'
@@ -99,15 +96,15 @@ if(!empty($_POST['categories'])){
 
              $sanitize_input = filter_var($_POST['categories'],FILTER_SANITIZE_STRING); 
              ?>
-		     <h2>Category: <?php echo $sanitize_input; ?></h2>
-		     <?php	
+         <h2>Category: <?php echo $sanitize_input; ?></h2>
+         <?php  
    
              $decode_request= json_decode(
-   	                                       $fetch_request->httpRequest('https://en.wikipedia.org/w/api.php',
-   	                  	                   "action=query&list=categorymembers&cmlimit=10&cmtitle=Category:".$sanitize_input."&format=json",
-   	                                       true,2)
-   	                                       ,true
-   	                                     );
+                                           $fetch_request->httpRequest('https://en.wikipedia.org/w/api.php',
+                                           "action=query&list=categorymembers&cmlimit=10&cmtitle=Category:".$sanitize_input."&format=json",
+                                           true,2)
+                                           ,true
+                                         );
 
 
              /****Iterate over nested decoded curl request**/
@@ -116,22 +113,22 @@ if(!empty($_POST['categories'])){
 
             foreach($iterator_response as $key=>$value) {
 
-            	/****Check for WIKI Category API Errors **/
+              /****Check for WIKI Category API Errors **/
                    
-		              if(strrpos($value, "invalidcategory") !== false or  strrpos($value, "invalidtitle") !== false or 
-		        	               strrpos($value, "invalidtitleinfo") !== false  ){
-		                          die("The category name  or title you entered is not valid");
-		               }
+                  if(strrpos($value, "invalidcategory") !== false or  strrpos($value, "invalidtitle") !== false or 
+                             strrpos($value, "invalidtitleinfo") !== false  ){
+                              die("The category name  or title you entered is not valid");
+                   }
 
                      
-                    /****If title exist,  get make curl request using category title**/
+                    /****If title exist, make curl request using category title**/
 
-		             if($key ==="title"){
-		             
-			       	  	 	  	$cat_title = urlencode($value);
-			       	  	 	  	$decode_title[]= json_decode($fetch_request->httpRequest('https://en.wikipedia.org/w/api.php','format=json&action=query&prop=extracts&exintro=&explaintext=&titles='.$cat_title.'',true,2),true);
-		 	             	  	 	  	
-		              }
+                 if($key ==="title"){
+                 
+                        $cat_title = urlencode($value);
+                        $decode_title[]= json_decode($fetch_request->httpRequest('https://en.wikipedia.org/w/api.php','format=json&action=query&prop=extracts&exintro=&explaintext=&titles='.$cat_title.'',true,2),true);
+                              
+                  }
             }
      
             $iterator_response = new RecursiveIteratorIterator(new RecursiveArrayIterator($decode_title));
@@ -148,69 +145,70 @@ if(!empty($_POST['categories'])){
  foreach ($iterator_response as $key => $value) {
      
 
- 	  if($key === "extract"){
- 	  	 $articles = $value;
- 	  	      
- 	  	    /***Check for empty article*/
- 	  	     if(!empty($articles)){
+    if($key === "extract"){
+       $articles = $value;
+            
+          /***Check for empty article*/
+           if(!empty($articles)){
                         
 
                       /***
                       Use Third Party Readability API to score Articles
                       */
-	       	  	 	  	$decode_readability = json_decode($fetch_request->httpRequest('https://ipeirotis-readability-metrics.p.mashape.com/getReadabilityMetrics','text='.$articles.'',true,2,$headers),true);
+                    $decode_readability = json_decode($fetch_request->httpRequest('https://ipeirotis-readability-metrics.p.mashape.com/getReadabilityMetrics','text='.$articles.'',true,2,$readability_headers),true);
 
-	       	  	 	  	array_push($decode_readability,$articles);
-	       	  	 	  	
+                    array_push($decode_readability,$articles);
+                    
 
-	       	  	 	  	array_multisort($decode_readability,SORT_DESC,SORT_NUMERIC);
-	       	  	 	    extract($decode_readability);
+                    /*****Sort Articles****/
+                    array_multisort($decode_readability,SORT_DESC,SORT_NUMERIC);
+                    extract($decode_readability);
 
-	       	  	 	    
-	       	  	 	    ?>
-			       	  	 	    <div class="col-md-12 wiki-articles-container">
+                    
+                    ?>
+                        <div class="col-md-12 wiki-articles-container">
 
-	                    	   	       
-	                    	   	      	<span><strong>SENTENCES:<?php echo $SENTENCES; ?></strong></span>
-	                    	   	      	<br/>
-	                    	   	      	<span><strong>WORDS:<?php echo $WORDS; ?></strong></span>
-	                    	   	      	<br/>
-	                    	   	      	<span><strong>SMOG:<?php echo $SMOG; ?></strong></span>
-	                    	   	      	<br/>
-	                    	   	      	<span><strong>COMPLEXWORDS:<?php echo $COMPLEXWORDS; ?></strong></span>
-	                    	   	      	<br/>
-	                    	   	      	<span><strong>COLEMAN_LIAU:<?php echo $COLEMAN_LIAU; ?></strong></span>
-	                    	   	      	<br/>
-	                    	   	      	<span><strong>FLESCH_READING:<?php echo $FLESCH_READING; ?></strong></span>
-	                    	   	      	<br/>
-	                    	   	      	<span><strong>ARI:<?php echo $ARI; ?></strong></span>
-	                    	   	      	<br/>
-	                    	   	      	<span><strong>SYLLABLES:<?php echo $SYLLABLES;?></strong></span>
-	                    	   	      	<br/>
-	                    	   	      	<span><strong>CHARACTERS:<?php echo $CHARACTERS;?></strong></span>
-	                    	   	      	<br/>
-	                    	   	      	<span><strong>SMOG_INDEX:<?php echo $SMOG_INDEX;?></strong></span>
-	                    	   	      	<br/>
-	                    	   	      	<span><strong>GUNNING_FOG:<?php echo $GUNNING_FOG;?></strong></span>
-	                    	   	      	<br/>
-	                    	   	      	<span><strong>FLESCH_KINCAID:<?php echo $FLESCH_KINCAID;?></strong></span>
-	                    	   	      	<br/>
+                                   
+                                    <span><strong>SENTENCES:<?php echo $SENTENCES; ?></strong></span>
+                                    <br/>
+                                    <span><strong>WORDS:<?php echo $WORDS; ?></strong></span>
+                                    <br/>
+                                    <span><strong>SMOG:<?php echo $SMOG; ?></strong></span>
+                                    <br/>
+                                    <span><strong>COMPLEXWORDS:<?php echo $COMPLEXWORDS; ?></strong></span>
+                                    <br/>
+                                    <span><strong>COLEMAN_LIAU:<?php echo $COLEMAN_LIAU; ?></strong></span>
+                                    <br/>
+                                    <span><strong>FLESCH_READING:<?php echo $FLESCH_READING; ?></strong></span>
+                                    <br/>
+                                    <span><strong>ARI:<?php echo $ARI; ?></strong></span>
+                                    <br/>
+                                    <span><strong>SYLLABLES:<?php echo $SYLLABLES;?></strong></span>
+                                    <br/>
+                                    <span><strong>CHARACTERS:<?php echo $CHARACTERS;?></strong></span>
+                                    <br/>
+                                    <span><strong>SMOG_INDEX:<?php echo $SMOG_INDEX;?></strong></span>
+                                    <br/>
+                                    <span><strong>GUNNING_FOG:<?php echo $GUNNING_FOG;?></strong></span>
+                                    <br/>
+                                    <span><strong>FLESCH_KINCAID:<?php echo $FLESCH_KINCAID;?></strong></span>
+                                    <br/>
                                         <p>
                                            <?php echo $decode_readability[0]; ?>
-		                    	   	    </p>
-		                    	   	    <div id="show_data"></div>
-            	   	           </div>
-	       	  	 	    <?php
-	       
-	       	  	 	  
+                                  </p>
+                                  <div id="show_data"></div>
+                             </div>
+                    <?php
+         
+                  
                 ?>
                  
-                         	      
- 	  	      <?php
- 	  	     }
- 	  	      
+                                
+            <?php
+           }
+            
                             
- 	  }
+    }
 
  }
 
@@ -233,9 +231,9 @@ if(!empty($_POST['categories'])){
 
 
 
-			    </div>
+          </div>
 
-			 </div>
+       </div>
 
               
 
