@@ -45,6 +45,15 @@ WIKI.App = (function(){
                 	       $('#submit').hide();
                  	       $('#searching').html("Searching Category Articles..Please Wait");
 
+                         $('.wiki-articles-container').each(function(index){
+                              $(this).remove();
+                              var that = $(this);
+                              $('#form').fadeOut('slow');
+                              $('#form').fadeIn('slow');
+                              
+                               
+                         });
+
                  });
           }
   }
