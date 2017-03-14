@@ -1,6 +1,8 @@
 # Wiki-Category-Crawler
 Crawls Wikipedia And Searches For Articles From a Given Category
 
+DEMO -- http://50.63.161.157/wiki-app/
+
 Usage
 
 -This app uses  Curl, and a third party API (Readability Metrics API)
