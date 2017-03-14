@@ -13,7 +13,6 @@ set_time_limit(170);
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
         <!---Styles-->
 
         <link href="./styles/main.css" rel="stylesheet" type="text/css">
@@ -25,16 +24,15 @@ set_time_limit(170);
         
 <script type="text/javascript">
  
-
         $(document).ready(function(){
             
+            /******Initializes Selectbox via JSON Categories & Form****/
              WIKI.App.init();
 
         });
 
 </script>
-
-     
+ 
     </head>
     <body>
         
@@ -46,8 +44,7 @@ set_time_limit(170);
                              
                                  <label for="form">Select a Category</label>
                                  <br/>
-                             
-                                 
+                                       
                            <form action="index.php" name="form" id="form" method="post" enctype="form-data">
                               <select name="categories" id="categories">
                             
@@ -61,11 +58,7 @@ set_time_limit(170);
                             <button type="submit" id="submit" class="btn btn-primary">Submit</button>
                            </form>
                       </div>
-                    </div>
-
-
-    
-                   
+                    </div>                 
  <?php
 
 
@@ -78,12 +71,7 @@ $wiki_cat_extract = array();
 /****Declare a variable that decodes a curl response for a wiki title**/
 $decode_title = array();
 
-/****Create headers for our readability API**/
-$readability_headers = [
-   'X-Mashape-Key:IRE9x39MQImshJy7zJL21m4QxqORp1XfAXKjsnkzt0BFJfvfZS',
-   'Content-Type:application/x-www-form-urlencoded',
-   'Accept:application/json'
-];
+
                         
 
 
@@ -96,8 +84,8 @@ if(!empty($_POST['categories'])){
 
              $sanitize_input = filter_var($_POST['categories'],FILTER_SANITIZE_STRING); 
              ?>
-         <h2>Category: <?php echo $sanitize_input; ?></h2>
-         <?php  
+             <h2>Category: <?php echo $sanitize_input; ?></h2>
+             <?php  
    
              $decode_request= json_decode(
                                            $fetch_request->httpRequest('https://en.wikipedia.org/w/api.php',
@@ -133,7 +121,6 @@ if(!empty($_POST['categories'])){
      
             $iterator_response = new RecursiveIteratorIterator(new RecursiveArrayIterator($decode_title));
  
-
 ?>
 <div class="row">
 
@@ -157,7 +144,7 @@ if(!empty($_POST['categories'])){
                       /***
                       Use Third Party Readability API to score Articles
                       */
-                    $decode_readability = json_decode($fetch_request->httpRequest('https://ipeirotis-readability-metrics.p.mashape.com/getReadabilityMetrics','text='.$articles.'',true,2,$readability_headers),true);
+                    $decode_readability = json_decode($fetch_request->httpRequest('https://ipeirotis-readability-metrics.p.mashape.com/getReadabilityMetrics','text='.$articles.'',true,2,$fetch_request->readability_api_headers),true);
 
                     array_push($decode_readability,$articles);
                     
@@ -208,8 +195,9 @@ if(!empty($_POST['categories'])){
                                 
             <?php
            }
-            
-                            
+
+
+                                     
     }
 
  }
@@ -219,27 +207,16 @@ if(!empty($_POST['categories'])){
 </div>
 <?php
 
- 
-            
-
       }
-
-
-
-
-
       
  ?>
-
 
 
           </div>
 
        </div>
 
-              
-
 </div>  
         
-    </body>
+ </body>
 </html>
