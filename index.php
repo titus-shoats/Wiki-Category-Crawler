@@ -148,7 +148,9 @@ if(!empty($_POST['categories'])){
     if($key === "extract"){
        $articles = $value;
             
-          /***Check for empty article*/
+          /***
+          Check for empty article , if empty, will show less articles
+          */
            if(!empty($articles)){
                         
 
