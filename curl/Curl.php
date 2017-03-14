@@ -2,7 +2,23 @@
 
 class CURL{
 
-    function httpRequest($url, $post = "", $retry = false, $retryNumber = 0, $headers = array()) {
+
+    
+     public $readability_testing_api = 'IRE9x39MQImshJy7zJL21m4QxqORp1XfAXKjsnkzt0BFJfvfZS';
+     public $readability_production_api = '6yNTfMQFt0mshHRsHHhtIVIr9zVmp1QaW4TjsnHCwatiM1isYI';
+
+   
+   function readability_api_headers(){
+
+      return array(
+                 'X-Mashape-Key:'.$this->readability_testing_api.'',
+                 'Content-Type:application/x-www-form-urlencoded',
+                 'Accept:application/json'
+                 );
+    }
+
+    
+  function httpRequest($url, $post = "", $retry = false, $retryNumber = 0, $headers = array()) {
     sleep(3);
     try {
         $ch = curl_init();
