@@ -1,0 +1,12 @@
+ .col-md-12{
+   display:block;
+   width:200px;
+   height:auto;
+   margin-right:auto;
+   margin-left:auto;
+   float:none;
+   border:1px solid lightgrey;
+   margin-top:20px;
+
+
+}
