@@ -28,8 +28,11 @@ WIKI.App = (function(){
 
   WIKI.Views.toggleForm.prototype = {
              hideShowForm:function(){
+
+               /*****Checks to see if categories/data is visible***/
                   setInterval(function(){
 
+                 
 	                 	  if(document.getElementById("show_data")){
 	                 	     $('#searching').html("");
 	                 	     $('#submit').show();
