@@ -5,7 +5,7 @@ Usage
 
 -This app uses  Curl, and a third party API (Readability Metrics API)
 
--There are two API Keys, one for Testing and the other for Production
+-There are two Readability API Keys, one for Testing and the other for Production
 
 -Testing API KEY  IRE9x39MQImshJy7zJL21m4QxqORp1XfAXKjsnkzt0BFJfvfZS
  - Testing API Key is set by Default
@@ -14,4 +14,8 @@ Usage
 
 - You can set the API KEY within the readability headers ARRAY
 
-- set_time_limit May need to be set higher depending on the WIKI API Parameter (cmlimit)
+- set_time_limit May need to be set higher depending on the integer provided by the Parameter (cmlimit)
+
+
+
+
