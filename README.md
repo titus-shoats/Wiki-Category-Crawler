@@ -8,6 +8,7 @@ Usage
 -There are two API Keys, one for Testing and the other for Production
 
 -Testing API KEY  IRE9x39MQImshJy7zJL21m4QxqORp1XfAXKjsnkzt0BFJfvfZS
+ - Testing API Key is set by Default
 
 -Production API Key 6yNTfMQFt0mshHRsHHhtIVIr9zVmp1QaW4TjsnHCwatiM1isYI
 
