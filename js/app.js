@@ -72,7 +72,8 @@ WIKI.App = (function(){
   	  	  	type:"GET",
   	  	  	contentType:"application/json",
   	  	  	success:function(response){
-
+				
+                /***Populates categories via selectbox ***/
                  $.each(response,function(key,value){
                  	  
 
