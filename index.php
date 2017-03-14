@@ -26,6 +26,7 @@ set_time_limit(170);
  
         $(document).ready(function(){
             
+            /******Initializes Selectbox via JSON Categories & Form****/
              WIKI.App.init();
 
         });
@@ -70,12 +71,8 @@ $wiki_cat_extract = array();
 /****Declare a variable that decodes a curl response for a wiki title**/
 $decode_title = array();
 
-/****Create headers for our readability API**/
-$readability_headers = [
-   'X-Mashape-Key:IRE9x39MQImshJy7zJL21m4QxqORp1XfAXKjsnkzt0BFJfvfZS',
-   'Content-Type:application/x-www-form-urlencoded',
-   'Accept:application/json'
-];
+
+
                         
 
 
@@ -148,7 +145,7 @@ if(!empty($_POST['categories'])){
                       /***
                       Use Third Party Readability API to score Articles
                       */
-                    $decode_readability = json_decode($fetch_request->httpRequest('https://ipeirotis-readability-metrics.p.mashape.com/getReadabilityMetrics','text='.$articles.'',true,2,$readability_headers),true);
+                    $decode_readability = json_decode($fetch_request->httpRequest('https://ipeirotis-readability-metrics.p.mashape.com/getReadabilityMetrics','text='.$articles.'',true,2,$fetch_request->readability_api_headers()),true);
 
                     array_push($decode_readability,$articles);
                     
