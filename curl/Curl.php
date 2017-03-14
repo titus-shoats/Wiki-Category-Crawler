@@ -2,12 +2,18 @@
 
 class CURL{
 
-
-    
+     /****
+    Readability Metrics API Keys
+    @property testing api key
+    @property production api key
+   ****/
      public $readability_testing_api = 'IRE9x39MQImshJy7zJL21m4QxqORp1XfAXKjsnkzt0BFJfvfZS';
      public $readability_production_api = '6yNTfMQFt0mshHRsHHhtIVIr9zVmp1QaW4TjsnHCwatiM1isYI';
 
-   
+     /****
+    Readability Metrics API Headers
+    @return array  API headers array
+   ****/ 
    function readability_api_headers(){
 
       return array(
@@ -17,7 +23,10 @@ class CURL{
                  );
     }
 
-    
+     /****
+    CURL HTTP Request
+    @return response
+   ****/ 
   function httpRequest($url, $post = "", $retry = false, $retryNumber = 0, $headers = array()) {
     sleep(3);
     try {
