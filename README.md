@@ -16,7 +16,7 @@ Usage
 
 - You can set the API KEY within the readability headers ARRAY
 
-- set_time_limit May need to be set higher depending on the integer provided by the Parameter (cmlimit)
+- set_time_limit May need to be set higher depending on the number provided by the Parameter cmlimit: Maximum number of pages
 
 
 
