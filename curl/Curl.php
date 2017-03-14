@@ -2,10 +2,32 @@
 
 class CURL{
 
+
+    /*****
+   Readability Metrics API Keys
+   ****/
+     public $readability_testing_api = 'IRE9x39MQImshJy7zJL21m4QxqORp1XfAXKjsnkzt0BFJfvfZS';
+     public $readability_production_api = '6yNTfMQFt0mshHRsHHhtIVIr9zVmp1QaW4TjsnHCwatiM1isYI';
+
+
+   /*****
+   Readability Metrics API headers - 
+   @return readanility headers array
+   ****/
+   function readability_api_headers(){
+
+      return array(
+                 'X-Mashape-Key:'.$this->readability_testing_api.'',
+                 'Content-Type:application/x-www-form-urlencoded',
+                 'Accept:application/json'
+                 );
+    }
+
+
+
     
     function httpRequest($url, $post = "", $retry = false, $retryNumber = 0, $headers = array()) {
     sleep(3);
-    global $settings;
     try {
         $ch = curl_init();
         //Change the user agent below suitably
@@ -14,8 +36,6 @@ class CURL{
         curl_setopt($ch, CURLOPT_URL, ($url));
         curl_setopt($ch, CURLOPT_ENCODING, "UTF-8");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_COOKIEFILE, $settings['cookiefile']);
-        curl_setopt($ch, CURLOPT_COOKIEJAR, $settings['cookiefile']);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         if (!empty($post))
@@ -41,7 +61,7 @@ class CURL{
     }
 
     return $response;
-}
+  }
 }
 
 ?>
