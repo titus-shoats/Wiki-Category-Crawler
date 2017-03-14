@@ -3,25 +3,6 @@
 class CURL{
 
 
-    /*****
-   Readability Metrics API Keys
-   ****/
-     public $readability_testing_api = 'IRE9x39MQImshJy7zJL21m4QxqORp1XfAXKjsnkzt0BFJfvfZS';
-     public $readability_production_api = '6yNTfMQFt0mshHRsHHhtIVIr9zVmp1QaW4TjsnHCwatiM1isYI';
-
-
-   /*****
-   Readability Metrics API headers - 
-   @return readanility headers array
-   ****/
-   function readability_api_headers(){
-
-      return array(
-                 'X-Mashape-Key:'.$this->readability_testing_api.'',
-                 'Content-Type:application/x-www-form-urlencoded',
-                 'Accept:application/json'
-                 );
-    }
 
 
 
